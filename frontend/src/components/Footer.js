@@ -6,7 +6,7 @@ const Footer = () => {
     <footer>
       <Container>
         <Row>
-          <Col className='text-center py-3'>
+          <Col className='py-3'>
             <a className='px-3' href='https://wa.me/message/DLSM3VGHL6JQI1'>
               <i className='fab fa-whatsapp fa-2x'></i>
             </a>
@@ -14,7 +14,7 @@ const Footer = () => {
               <i className='fab fa-instagram fa-2x'></i>
             </a>
           </Col>
-          <Col className='text-center py-3'>
+          <Col className='text-right py-3'>
             &copy; 2021 Roma Doces de Vitrine
           </Col>
         </Row>
