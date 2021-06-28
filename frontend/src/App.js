@@ -7,6 +7,7 @@ import Home from './screens/Home';
 import ProductDetail from './screens/ProductDetail';
 import Products from './screens/Products';
 import Cart from './screens/Cart';
+import Login from './screens/Login';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route exact path='/produtos' component={Products} />
           <Route path='/produtos/:id' component={ProductDetail} />
           <Route path='/cart/:id?' component={Cart} />
+          <Route path='/login' component={Login} />
         </Container>
       </main>
       <Footer />
