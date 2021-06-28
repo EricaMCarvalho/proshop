@@ -24,7 +24,6 @@ const ProductDetail = ({ history, match }) => {
   );
 
   useEffect(() => {
-    console.log(match);
     dispatch(listProductDetails(match.params.id));
   }, [dispatch, match]);
 
@@ -101,7 +100,7 @@ const ProductDetail = ({ history, match }) => {
                     type='button'
                     disabled={product.countInStock === 0}
                   >
-                    Adicionar ao carrinho
+                    Adicionar à sacola
                   </Button>
                 </ListGroup.Item>
               </ListGroup>

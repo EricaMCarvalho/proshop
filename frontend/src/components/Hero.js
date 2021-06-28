@@ -44,7 +44,7 @@ const Hero = () => {
             className='badge rounded-pill bg-primary mt-3 p-3'
             type='button'
           >
-            Peça pelo WhatsApp
+            Conheça nossos produtos
           </Button>
         </Carousel.Caption>
       </Carousel.Item>
@@ -66,7 +66,7 @@ const Hero = () => {
             className='badge rounded-pill bg-primary mt-3 p-3'
             type='button'
           >
-            Peça pelo WhatsApp
+            Conheça nosso Instagram
           </Button>
         </Carousel.Caption>
       </Carousel.Item>
