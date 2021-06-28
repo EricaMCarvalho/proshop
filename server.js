@@ -2,6 +2,7 @@ const express = require('express');
 const connectDB = require('./config/database');
 const produtos = require('./data/products');
 const productRouter = require('./routes/product');
+const userRouter = require('./routes/user');
 const errorHandler = require('./middleware/errorHandler');
 
 if (process.env.NODE_ENV !== 'production') {
@@ -12,9 +13,12 @@ connectDB();
 
 const app = express();
 
+app.use(express.json());
+
 app.get('/', (req, res) => res.send('API is running...'));
 
 app.use('/api/produtos', productRouter);
+app.use('/api/users', userRouter);
 
 app.use(errorHandler);
 
