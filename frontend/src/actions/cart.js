@@ -39,5 +39,5 @@ export const saveShippingAddress = (data) => (dispatch) => {
     payload: data,
   });
 
-  localStorage.setItem('shippingAddress', data);
+  localStorage.setItem('shippingAddress', JSON.stringify(data));
 };
