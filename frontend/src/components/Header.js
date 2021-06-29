@@ -28,7 +28,7 @@ const Header = () => {
                 <Nav.Link>Produtos</Nav.Link>
               </LinkContainer>
               <LinkContainer to='/contato'>
-                <Nav.Link>Contato</Nav.Link>
+                <Nav.Link>Fale conosco</Nav.Link>
               </LinkContainer>
             </Nav>
             <Nav className='ml-auto'>
