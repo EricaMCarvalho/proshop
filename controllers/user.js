@@ -39,11 +39,41 @@ exports.authUser = asyncHandler(async (req, res) => {
  * Access:  Private
  */
 exports.getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
   res.json({
-    id: req.user.id,
-    name: req.user.name,
-    email: req.user.email,
-    isAdmin: req.user.isAdmin,
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+  });
+});
+
+/**
+ * Desc:    Update user profile
+ * Route:   PUT /api/users/profile
+ * Access:  Private
+ */
+exports.updatetUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    throw new ErrorResponse('Usuario nao encontrado', 404);
+  }
+
+  user.name = req.body.name || user.name;
+  user.email = req.body.email || user.email;
+
+  if (req.body.password) {
+    user.password = req.body.password;
+  }
+
+  const updatedUser = await user.save();
+
+  res.json({
+    id: updatedUser.id,
+    name: updatedUser.name,
+    email: updatedUser.email,
+    isAdmin: updatedUser.isAdmin,
+    token: generateToken(updatedUser.id),
   });
 });
 

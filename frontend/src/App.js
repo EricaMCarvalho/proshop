@@ -9,6 +9,7 @@ import Products from './screens/Products';
 import Cart from './screens/Cart';
 import Login from './screens/Login';
 import Register from './screens/Register';
+import Profile from './screens/Profile';
 
 const App = () => {
   return (
@@ -18,6 +19,8 @@ const App = () => {
         <Container>
           <Route exact path='/' component={Home} />
           <Route exact path='/produtos' component={Products} />
+          <Route path='/users/:id' component={Profile} />
+          <Route path='/profile' component={Profile} />
           <Route path='/produtos/:id' component={ProductDetail} />
           <Route path='/cart/:id?' component={Cart} />
           <Route path='/login' component={Login} />
