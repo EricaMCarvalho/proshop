@@ -46,8 +46,9 @@ const Cart = ({ match, location, history }) => {
         <Col md={8}>
           {cartItems.length === 0 ? (
             <Message>
-              Sua sacola está vazia{' '}
-              <Link to='/'>Vá para a página inicial.</Link>
+              Sua sacola está vazia. Vá para a{' '}
+              <Link to='/'>página inicial</Link> ou procure o{' '}
+              <Link to='/produtos'>produto desejado.</Link>
             </Message>
           ) : (
             <ListGroup variant='flush'>
