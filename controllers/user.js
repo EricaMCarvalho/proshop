@@ -49,7 +49,7 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
 
 /**
  * Desc:    Register a new user
- * Route:   POST /api/users
+ * Route:   POST /api/users/register
  * Access:  Public
  */
 exports.registerUser = asyncHandler(async (req, res) => {
@@ -62,7 +62,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
   }
 
   if (password !== password2) {
-    throw new ErrorResponse('Senhas não combinam.', 400);
+    throw new ErrorResponse('As senhas não combinam.', 400);
   }
 
   const user = await User.create({ name, email, password });
