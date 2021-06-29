@@ -3,6 +3,7 @@ const connectDB = require('./config/database');
 const produtos = require('./data/products');
 const productRouter = require('./routes/product');
 const userRouter = require('./routes/user');
+const orderRouter = require('./routes/order');
 const errorHandler = require('./middleware/errorHandler');
 
 if (process.env.NODE_ENV !== 'production') {
@@ -19,6 +20,7 @@ app.get('/', (req, res) => res.send('API is running...'));
 
 app.use('/api/produtos', productRouter);
 app.use('/api/users', userRouter);
+app.use('/api/orders', orderRouter);
 
 app.use(errorHandler);
 

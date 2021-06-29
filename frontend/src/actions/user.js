@@ -72,14 +72,10 @@ export const register =
           'Content-Type': 'application/json',
         },
       };
+
       const { data } = await axios.post(
         '/api/users/register',
-        {
-          name,
-          email,
-          password,
-          password2,
-        },
+        { name, email, password },
         config
       );
 

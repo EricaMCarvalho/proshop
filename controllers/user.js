@@ -83,16 +83,12 @@ exports.updatetUserProfile = asyncHandler(async (req, res) => {
  * Access:  Public
  */
 exports.registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, password2 } = req.body;
+  const { name, email, password } = req.body;
 
   const userExists = await User.findOne({ email });
 
   if (userExists) {
     throw new ErrorResponse('O usuário já existe.', 400);
-  }
-
-  if (password !== password2) {
-    throw new ErrorResponse('As senhas não combinam.', 400);
   }
 
   const user = await User.create({ name, email, password });
