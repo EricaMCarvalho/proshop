@@ -11,6 +11,7 @@ import Login from './screens/Login';
 import Register from './screens/Register';
 import Profile from './screens/Profile';
 import Shipping from './screens/Shipping';
+import Payment from './screens/Payment';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
           <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
           <Route path='/shipping' component={Shipping} />
+          <Route path='/payment' component={Payment} />
         </Container>
       </main>
       <Footer />
