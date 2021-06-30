@@ -1,21 +1,53 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { PayPalButton } from 'react-paypal-button-v2';
 import { Link } from 'react-router-dom';
 import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getOrderDetails } from '../actions/order';
+import { getOrderDetails, payOrder } from '../actions/order';
+import { ORDER_PAY_RESET } from '../actions/types';
 
 const Order = ({ match }) => {
+  const [sdkReady, setSdkReady] = useState(false);
+
   const dispatch = useDispatch();
 
   const { order, loading, error } = useSelector((state) => state.orderDetails);
+  const { success: successPay, loading: loadingPay } = useSelector(
+    (state) => state.orderPay
+  );
 
   useEffect(() => {
-    if (!order || order._id !== match.params.id) {
+    const addPayPalScript = async () => {
+      const { data: clientId } = await axios.get('/api/config/paypal');
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      script.async = true;
+      script.onload = () => {
+        setSdkReady(true);
+      };
+      document.body.appendChild(script);
+    };
+
+    // if order is not there or needs to be updated
+    if (!order || order._id !== match.params.id || successPay) {
+      dispatch({ type: ORDER_PAY_RESET });
       dispatch(getOrderDetails(match.params.id));
+    } else if (!order.isPaid) {
+      if (!window.paypal) {
+        addPayPalScript();
+      }
+    } else {
+      setSdkReady(true);
     }
-  }, [order, match, dispatch]);
+  }, [order, match, dispatch, successPay]);
+
+  const successPaymentHandler = (paymentResult) => {
+    dispatch(payOrder(match.params.id, paymentResult));
+  };
 
   return loading ? (
     <Loader />
@@ -56,7 +88,9 @@ const Order = ({ match }) => {
                 <strong>Forma de pagamento:</strong> {order.paymentMethod}
               </p>
               {order.isPaid ? (
-                <Message variant='success'>Pago em {order.paidAt}</Message>
+                <Message variant='success'>
+                  Pagamento efetuado em {order.paidAt}
+                </Message>
               ) : (
                 <Message variant='danger'>Pagamento não efetuado</Message>
               )}
@@ -124,6 +158,18 @@ const Order = ({ match }) => {
                 </Col>
               </Row>
             </ListGroup.Item>
+            {!order.isPaid && (
+              <ListGroup.Item>
+                {loadingPay || !sdkReady ? (
+                  <Loader />
+                ) : (
+                  <PayPalButton
+                    amount={order.totalPrice}
+                    onSuccess={successPaymentHandler}
+                  />
+                )}
+              </ListGroup.Item>
+            )}
           </ListGroup>
         </Col>
       </Row>
