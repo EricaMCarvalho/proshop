@@ -14,6 +14,8 @@ import {
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_RESET,
+  ORDER_LIST_MY_RESET,
+  USER_DETAILS_RESET,
 } from './types';
 
 export const login = (email, password) => async (dispatch) => {
@@ -55,9 +57,9 @@ export const login = (email, password) => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo');
-  dispatch({
-    type: USER_LOGOUT,
-  });
+  dispatch({ type: USER_LOGOUT });
+  dispatch({ type: ORDER_LIST_MY_RESET });
+  dispatch({ type: USER_DETAILS_RESET });
 };
 
 export const register =
@@ -161,6 +163,12 @@ export const updateUserProfile =
         type: USER_UPDATE_PROFILE_SUCCESS,
         payload: data,
       });
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+
+      localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (err) {
       dispatch({
         type: USER_UPDATE_PROFILE_FAIL,
