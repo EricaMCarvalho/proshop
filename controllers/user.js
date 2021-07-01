@@ -105,3 +105,72 @@ exports.registerUser = asyncHandler(async (req, res) => {
     token: generateToken(user.id),
   });
 });
+
+/**
+ * Desc:    Get add users
+ * Route:   GET /api/users
+ * Access:  Private/Admin
+ */
+exports.getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+
+  res.status(200).json(users);
+});
+
+/**
+ * Desc:    Delete user
+ * Route:   DELETE /api/users/:id
+ * Access:  Private/Admin
+ */
+exports.deleteUser = asyncHandler(async (req, res) => {
+  console.log(req.params.id);
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    throw new ErrorResponse('User does not exist', 404);
+  }
+
+  await user.remove();
+
+  res.status(200).json({ message: 'User removed' });
+});
+
+/**
+ * Desc:    Get user by id
+ * Route:   GET /api/users/:id
+ * Access:  Private/Admin
+ */
+exports.getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select('-password');
+
+  if (!user) {
+    throw new ErrorResponse('User does not exist', 404);
+  }
+
+  res.status(200).json(user);
+});
+
+/**
+ * Desc:    Update user profile
+ * Route:   PUT /api/users/:id
+ * Access:  Private/Admin
+ */
+exports.updatetUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    throw new ErrorResponse('Usuario nao encontrado', 404);
+  }
+
+  user.name = req.body.name || user.name;
+  user.email = req.body.email || user.email;
+  user.isAdmin = req.body.isAdmin;
+
+  const updatedUser = await user.save();
+
+  res.json({
+    id: updatedUser.id,
+    name: updatedUser.name,
+    email: updatedUser.email,
+    isAdmin: updatedUser.isAdmin,
+  });
+});
