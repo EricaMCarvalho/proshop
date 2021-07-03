@@ -34,7 +34,6 @@ exports.getProduct = asyncHandler(async (req, res) => {
  */
 exports.deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
-  console.log('hit');
 
   await product.remove();
   res.json({ message: 'Product removed' });
@@ -47,18 +46,47 @@ exports.deleteProduct = asyncHandler(async (req, res) => {
 
 /**
  * Desc:    Create a product
- * Route:   PUT /api/produtos/:id
+ * Route:   PUT /api/produtos
  * Access:  Private/Admin
  */
 exports.createProduct = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id);
-  console.log('hit');
+  const product = new Product({
+    name: 'Sample name',
+    price: 0,
+    user: req.user._id,
+    image: '/images/sample.jpg',
+    category: 'Sample category',
+    countInStock: 0,
+    description: 'Sample description',
+  });
 
-  await product.remove();
-  res.json({ message: 'Product removed' });
+  const createdProduct = await product.save();
+  res.status(201).json(createdProduct);
+});
+
+/**
+ * Desc:    Update a product
+ * Route:   PUT /api/produtos/:id
+ * Access:  Private/Admin
+ */
+exports.updateProduct = asyncHandler(async (req, res) => {
+  const { name, price, user, image, category, countInStock, description } =
+    req.body;
+
+  const product = await Product.findById(req.params.id);
 
   if (!product) {
-    throw new ErrorResponse('Product not found', 404);
+    throw new ErrorResponse('Esse produto nao existe', 404);
   }
-  res.json(product);
+
+  product.name = name;
+  product.price = price;
+  product.image = image;
+  product.category = category;
+  product.countInStock = countInStock;
+  product.description = description;
+
+  const updatedProduct = await product.save();
+
+  res.status(201).json(updatedProduct);
 });
